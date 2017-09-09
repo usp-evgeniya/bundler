@@ -11,6 +11,8 @@ const gulp = require('gulp'),
     webpack = require('webpack'),
     gulpWebpack = require('gulp-webpack'),
     webpackConfig = require('./webpack.config.js'),
+    jshint = require('gulp-jshint'),
+    lintConfig = require('./lint.config.js'),
     //templates
     pug = require('gulp-pug'),
     //build
@@ -37,6 +39,10 @@ var paths = {
     images: {
         src: 'src/images/**/*.*',
         dest: 'dist/img/'
+    },
+    fonts: {
+        src: 'src/fonts/**/*.*',
+        dest: 'dist/fonts/'
     }
 }
 
@@ -55,9 +61,13 @@ function styles() {
 
 function scripts() {
     return gulp.src(paths.scripts.src)
+    .pipe(jshint(lintConfig))
+    .pipe(jshint.reporter('default'))
     .pipe(gulpWebpack(webpackConfig, webpack))
     .pipe(gulp.dest(paths.scripts.dest));
 }
+
+
 
 function templates() {
     return gulp.src(paths.templates.src)
@@ -70,6 +80,11 @@ function images() {
     .pipe(gulp.dest(paths.images.dest));
 }
 
+function fonts() {
+    return gulp.src(paths.fonts.src)
+    .pipe(gulp.dest(paths.fonts.dest));
+}
+
 
 function clean() {
     return del('dist')
@@ -78,8 +93,9 @@ function clean() {
 function watch() {
     gulp.watch(paths.styles.watch, styles);
     gulp.watch(paths.scripts.watch, scripts);
-    gulp.watch(paths.templates.watch, templates)
-    gulp.watch(paths.images.src, images)
+    gulp.watch(paths.templates.watch, templates);
+    gulp.watch(paths.images.src, images);
+    gulp.watch(paths.fonts.src, fonts)
 }
 
 function server() {
@@ -95,18 +111,19 @@ exports.styles = styles;
 exports.scripts = scripts;
 exports.templates = templates;
 exports.images = images;
+exports.fonts = fonts;
 exports.watch = watch;
 exports.clean = clean;
 exports.clean = server;
 
 gulp.task('build', gulp.series(
     clean,
-    gulp.parallel(styles,scripts,templates,images)
+    gulp.parallel(styles,scripts,templates,images,fonts)
 ))
 
 gulp.task('default', gulp.series(
     clean,
-    gulp.parallel(styles,scripts,templates,images),
+    gulp.parallel(styles,scripts,templates,images,fonts),
     gulp.parallel(watch,server)
 ))
 

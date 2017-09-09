@@ -10,24 +10,26 @@ Clone git repository
 Install node.js, npm 5, gulp-cli, webpack
 All packages required are described in package.json file
 
-3. Structure to be used
-    dist
-        css
-            *.css
-        js
-            *.js
-        img
-            *.svg, *.png, *.jpg
-        *.html
-    src
-        images
-        scripts
-            main.js
-        styles
-            styles.scss
-        templates
-            pages
-                *.pug
+3. Structure used in the project (you can change to yours as applicable)
+
+dist
+    css
+        *.css
+    js
+        *.js
+    img
+        *.svg, *.png, *.jpg
+    *.html
+src
+    images
+    scripts
+        main.js
+    styles
+        styles.scss
+    templates
+        pages
+            *.pug
+    fonts
 
 4. Content 
 
